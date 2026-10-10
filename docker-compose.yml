@@ -1,0 +1,97 @@
+version: "3.9"
+
+services:
+  # ── A11-K (Brain) ──────────────────────────────────────────────
+  reality:
+    build: ./services/reality-service
+    ports:
+      - "8001:8001"
+    environment:
+      - SERVICE_NAME=reality-service
+      - SOURCE=a11k.reality
+
+  knowledge:
+    build: ./services/knowledge-service
+    ports:
+      - "8002:8002"
+    environment:
+      - SERVICE_NAME=knowledge-service
+      - SOURCE=a11k.knowledge
+
+  risk:
+    build: ./services/risk-service
+    ports:
+      - "8003:8003"
+    environment:
+      - SERVICE_NAME=risk-service
+      - SOURCE=a11k.risk
+
+  executive:
+    build: ./services/executive-service
+    ports:
+      - "8004:8004"
+    environment:
+      - SERVICE_NAME=executive-service
+      - SOURCE=a11k.executive
+
+  # ── MindReply (Body) ───────────────────────────────────────────
+  discovery:
+    build: ./services/discovery-service
+    ports:
+      - "8101:8101"
+    environment:
+      - SERVICE_NAME=discovery-service
+      - SOURCE=mr.discovery
+
+  builder:
+    build: ./services/builder-service
+    ports:
+      - "8103:8103"
+    environment:
+      - SERVICE_NAME=builder-service
+      - SOURCE=mr.builder
+
+  commerce:
+    build: ./services/commerce-service
+    ports:
+      - "8102:8102"
+    environment:
+      - SERVICE_NAME=commerce-service
+      - SOURCE=mr.commerce
+
+  delivery:
+    build: ./services/delivery-service
+    ports:
+      - "8104:8104"
+    environment:
+      - SERVICE_NAME=delivery-service
+      - SOURCE=mr.delivery
+
+  expansion:
+    build: ./services/expansion-service
+    ports:
+      - "8105:8105"
+    environment:
+      - SERVICE_NAME=expansion-service
+      - SOURCE=mr.expansion
+
+  # ── Founder Gateways ───────────────────────────────────────────
+  a11k-gateway:
+    build: ./apps/a11k-gateway
+    ports:
+      - "9001:9001"
+    depends_on:
+      - reality
+      - knowledge
+      - risk
+      - executive
+
+  mindreply-gateway:
+    build: ./apps/mindreply-gateway
+    ports:
+      - "9101:9101"
+    depends_on:
+      - discovery
+      - commerce
+      - delivery
+      - expansion
