@@ -2,6 +2,9 @@
 
 Everything communicates through events only.
 ADR-0004: Event-First Communication.
+
+v1.1: idempotency_key added as a mandatory deduplication field.
+correlation_id traces one operation across services.
 """
 
 from __future__ import annotations
@@ -20,59 +23,76 @@ class PlatformEvent(BaseModel):
     event_type: str
     source: str
     correlation_id: str = Field(default_factory=lambda: str(uuid4()))
+    idempotency_key: str = Field(default_factory=lambda: str(uuid4()))
     timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     payload: dict[str, Any] = Field(default_factory=dict)
 
     @staticmethod
-    def create(event_type: str, source: str, payload: dict[str, Any] | None = None) -> PlatformEvent:
+    def create(
+        event_type: str,
+        source: str,
+        payload: dict[str, Any] | None = None,
+        correlation_id: str | None = None,
+        idempotency_key: str | None = None,
+    ) -> PlatformEvent:
         return PlatformEvent(
             event_type=event_type,
             source=source,
             payload=payload or {},
+            correlation_id=correlation_id or str(uuid4()),
+            idempotency_key=idempotency_key or str(uuid4()),
         )
 
 
 # ── Canonical event vocabulary ──────────────────────────────────────────────
 
 # A11-K (Brain) events
-FACT_SUBMITTED = "FACT_SUBMITTED"
-FACT_VERIFIED = "FACT_VERIFIED"
-FACT_REJECTED = "FACT_REJECTED"
-CONTRADICTION_FOUND = "CONTRADICTION_FOUND"
-KNOWLEDGE_CREATED = "KNOWLEDGE_CREATED"
-KNOWLEDGE_UPDATED = "KNOWLEDGE_UPDATED"
-PATTERN_DISCOVERED = "PATTERN_DISCOVERED"
-RISK_DETECTED = "RISK_DETECTED"
-RISK_ESCALATED = "RISK_ESCALATED"
-RISK_MITIGATED = "RISK_MITIGATED"
-RISK_CLOSED = "RISK_CLOSED"
-DECISION_CREATED = "DECISION_CREATED"
-DECISION_APPROVED = "DECISION_APPROVED"
-MISSION_CREATED = "MISSION_CREATED"
-PRIORITY_ASSIGNED = "PRIORITY_ASSIGNED"
-ORDER_ISSUED = "ORDER_ISSUED"
-DIRECTIVE_CREATED = "DIRECTIVE_CREATED"
-STANDARD_UPDATED = "PRINCIPLE_CHANGED"
+FACT_SUBMITTED = "fact.submitted"
+FACT_VERIFIED = "fact.verified"
+FACT_REJECTED = "fact.rejected"
+CONTRADICTION_FOUND = "fact.contradiction_found"
+KNOWLEDGE_CREATED = "knowledge.created"
+KNOWLEDGE_UPDATED = "knowledge.updated"
+PATTERN_DISCOVERED = "knowledge.pattern_discovered"
+RISK_DETECTED = "risk.detected"
+RISK_ESCALATED = "risk.escalated"
+RISK_MITIGATED = "risk.mitigated"
+RISK_CLOSED = "risk.closed"
+DECISION_CREATED = "decision.created"
+DECISION_APPROVED = "decision.approved"
+MISSION_CREATED = "mission.created"
+PRIORITY_ASSIGNED = "priority.assigned"
+ORDER_ISSUED = "order.issued"
+DIRECTIVE_CREATED = "directive.created"
+STANDARD_UPDATED = "standard.updated"
 
 # MindReply (Body) events
-OPPORTUNITY_FOUND = "OPPORTUNITY_FOUND"
-OPPORTUNITY_QUALIFIED = "OPPORTUNITY_QUALIFIED"
-ASSET_CREATED = "ASSET_CREATED"
-ASSET_DEPLOYED = "ASSET_DEPLOYED"
-REVENUE_GENERATED = "REVENUE_GENERATED"
-DELIVERY_STARTED = "DELIVERY_STARTED"
-DELIVERY_COMPLETED = "DELIVERY_COMPLETED"
-SYSTEM_EXPANDED = "SYSTEM_EXPANDED"
-CLIENT_CREATED = "CLIENT_CREATED"
-CLIENT_UPDATED = "CLIENT_UPDATED"
+OPPORTUNITY_FOUND = "opportunity.found"
+OPPORTUNITY_QUALIFIED = "opportunity.qualified"
+ASSET_CREATED = "asset.created"
+ASSET_DEPLOYED = "asset.deployed"
+REVENUE_GENERATED = "revenue.generated"
+DELIVERY_STARTED = "delivery.started"
+DELIVERY_COMPLETED = "delivery.completed"
+SYSTEM_EXPANDED = "system.expanded"
+CLIENT_CREATED = "client.created"
+CLIENT_UPDATED = "client.updated"
+
+# Accounting events
+JOURNAL_POSTED = "journal.posted"
+RECONCILIATION_COMPLETED = "reconciliation.completed"
+RECONCILIATION_GAP_DETECTED = "reconciliation.gap_detected"
 
 # Observatory / security events
-ALERT_CREATED = "ALERT_CREATED"
-SYSTEM_DEGRADED = "SYSTEM_DEGRADED"
-SYSTEM_HEALTHY = "SYSTEM_HEALTHY"
-ACCESS_DENIED = "ACCESS_DENIED"
-LOGIN_SUCCESS = "LOGIN_SUCCESS"
-LOGIN_FAILED = "LOGIN_FAILED"
-SECRET_ROTATED = "SECRET_ROTATED"
-INCIDENT_REPORTED = "INCIDENT_REPORTED"
-DASHBOARD_REFRESHED = "DASHBOARD_REFRESHED"
+ALERT_CREATED = "alert.created"
+SYSTEM_DEGRADED = "system.degraded"
+SYSTEM_HEALTHY = "system.healthy"
+ACCESS_DENIED = "security.access_denied"
+LOGIN_SUCCESS = "security.login_success"
+LOGIN_FAILED = "security.login_failed"
+SECRET_ROTATED = "security.secret_rotated"
+INCIDENT_REPORTED = "security.incident_reported"
+DASHBOARD_REFRESHED = "dashboard.refreshed"
+
+# Learning loop
+LEARNING_CAPTURED = "learning.captured"
