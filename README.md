@@ -79,3 +79,7 @@ docker compose up --build
 - Risk service: http://localhost:8003
 - Discovery service: http://localhost:8101
 - Commerce service: http://localhost:8102
+
+## Founder-facing frontend
+
+The public-facing A.K. Precision Robotics experience lives in [`apps/ak-precision-robotics`](apps/ak-precision-robotics/). It is the visual and narrative layer for the A11-K × MindReply operating architecture, while the services and gateways in this repository remain independently deployable.
