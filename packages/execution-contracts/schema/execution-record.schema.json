@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mindreply.example/schemas/execution-record.schema.json",
+  "$id": "urn:mindreply:schema:execution-record:1.0.0",
   "title": "MindReply Execution Record",
   "description": "Canonical, evidence-oriented record for one bounded execution.",
   "type": "object",
