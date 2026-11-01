@@ -1,54 +1,77 @@
 # Robot–CPU Platform
 
-**A11-K (Brain) × MindReply (Body)** — bi-platform operating architecture.
+A11-K × MindReply — The executive AI operating system for certainty and value.
 
-- **A11-K** = Operating Intelligence: verify, know, risk, decide, govern, secure, observe.
-- **MindReply** = Operating Presence: discover, build, sell, deliver, scale.
-- **Founder** = The Will: authorize, direct, own outcomes.
+## Mission
 
-## Core Principle
+Robot–CPU Platform is the canonical operating architecture for a disciplined AI enterprise.
 
-Every input becomes one of four things: **Knowledge · Decision · Action · Result**. Nothing else.
+- A11-K is the intelligence layer: verify, know, govern, decide, and protect.
+- MindReply is the execution layer: discover, build, sell, deliver, and scale.
+- Founder is the authority layer: decide, approve, and own outcomes.
 
-## Native Flow
+This structure creates a system where truth and value are not optional. They are the operating standard.
 
-```
+## Operating principle
+
+Every input becomes one of four categories:
+
+- Knowledge
+- Decision
+- Action
+- Result
+
+If an input does not increase certainty or value, it is rejected.
+
+## The system
+
+```text
 Signal → Knowledge → Verification → Decision → Execution → Observation → Learning → Knowledge
 ```
 
-## Structure
+## Platform architecture
 
-```
+```text
 robot-cpu-platform/
-├── apps/                  # Founder gateways
+├── apps/                       # Founder-facing and operator-facing gateways
 │   ├── a11k-gateway/
-│   └── mindreply-gateway/
-├── services/              # CPU + Robot runtime services
-│   ├── reality-service/   # A11-K: fact verification
-│   ├── knowledge-service/ # A11-K: knowledge graph
-│   ├── risk-service/      # A11-K: threat detection
-│   ├── executive-service/ # A11-K: prioritization
-│   ├── discovery-service/ # MindReply: opportunity scan
-│   ├── builder-service/   # MindReply: asset creation
-│   ├── commerce-service/  # MindReply: revenue
-│   ├── delivery-service/  # MindReply: client outcomes
-│   └── expansion-service/ # MindReply: scale
+│   ├── mindreply-gateway/
+│   └── ak-precision-robotics/
+├── services/                   # Runtime service domains
+│   ├── reality-service/        # A11-K: fact verification
+│   ├── knowledge-service/      # A11-K: knowledge graph and memory
+│   ├── risk-service/           # A11-K: risk and resilience
+│   ├── executive-service/      # A11-K: prioritization and decisions
+│   ├── discovery-service/      # MindReply: opportunity discovery
+│   ├── builder-service/        # MindReply: product creation
+│   ├── commerce-service/        # MindReply: revenue and growth
+│   ├── delivery-service/       # MindReply: client outcomes
+│   └── expansion-service/      # MindReply: scale and reach
 ├── packages/
-│   ├── events/            # Canonical event contracts
+│   ├── events/
 │   ├── auth/
 │   ├── logging/
-│   └── config/
-├── docs/                  # ADRs, constitutions
-├── infrastructure/
+│   ├── config/
+│   └── execution-contracts/
+├── docs/                       # Constitution, ADRs, operating principles
+├── policies/
+├── prompts/
 ├── tests/
 ├── docker-compose.yml
 ├── pyproject.toml
-└── README.md
+├── README.md
+└── LICENSE
 ```
 
-## Event Contract
+## Core law
 
-Everything communicates through events only:
+1. Does it increase certainty? → A11-K
+2. Does it increase value? → MindReply
+3. Does it increase neither? → Reject
+
+## Event contract
+
+Everything communicates through typed events.
 
 ```json
 {
@@ -61,25 +84,56 @@ Everything communicates through events only:
 }
 ```
 
-## Zero Operational Law
+## Governance and authority
 
-1. Does it increase certainty? → A11-K
-2. Does it increase value? → MindReply
-3. Does it increase neither? → Reject
+The platform is governed by a simple rule:
 
-## Run
+- CPUs verify
+- Robots execute
+- Humans authorize
+
+This means human approval remains sovereign at critical decision points, while the system continuously provides evidence, context, and operational intelligence.
+
+## Brand and design system
+
+This repository is the canonical source for the ecosystem’s premium operating identity.
+
+See: `docs/BRAND-SYSTEM.md`
+
+The system is intentionally:
+
+- executive-grade
+- restrained and premium
+- calm, precise, and credible
+- low-noise and high-signal
+- built for trust, clarity, and execution
+
+## Evidence and accountability
+
+The platform is designed to make outcomes auditable.
+
+- evidence trails matter
+- decisions are traceable
+- risk is monitored continuously
+- system health is observable
+- operational actions remain reviewable
+
+## Run locally
 
 ```bash
 docker compose up --build
 ```
 
-- A11-K gateway: http://localhost:9001/dashboard
-- MindReply gateway: http://localhost:9101/dashboard
-- Reality service: http://localhost:8001
-- Risk service: http://localhost:8003
-- Discovery service: http://localhost:8101
-- Commerce service: http://localhost:8102
+## Key ecosystem links
 
-## Founder-facing frontend
+- A11-K Core: https://github.com/angellllkr-eng/a11k-core
+- A11 Sovereign Nowline: legacy reference only
+- A11 Evidence Surface: public proof layer
+- Solara Brand Identity: premium design system
+- MindReply execution contracts: packages/execution-contracts
 
-The public-facing A.K. Precision Robotics experience lives in [`apps/ak-precision-robotics`](apps/ak-precision-robotics/). It is the visual and narrative layer for the A11-K × MindReply operating architecture, while the services and gateways in this repository remain independently deployable.
+## Status
+
+This repository is the operating system authority for the current platform architecture.
+
+The system is designed to be clear, scalable, and trustworthy—without gimmicks, unnecessary novelty, or inflated hype.
