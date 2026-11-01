@@ -1,0 +1,386 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mindreply.example/schemas/execution-record.schema.json",
+  "title": "MindReply Execution Record",
+  "description": "Canonical, evidence-oriented record for one bounded execution.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "execution_id",
+    "task",
+    "lifecycle_stage",
+    "status",
+    "owner",
+    "created_at",
+    "input_refs",
+    "output_refs",
+    "approvals",
+    "tool_executions",
+    "test_results",
+    "evidence_refs"
+  ],
+  "properties": {
+    "execution_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "objective",
+        "scope"
+      ],
+      "properties": {
+        "objective": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "department": {
+          "type": "string",
+          "enum": [
+            "engineering",
+            "operations",
+            "marketing",
+            "finance",
+            "research",
+            "shared"
+          ]
+        }
+      }
+    },
+    "lifecycle_stage": {
+      "type": "string",
+      "enum": [
+        "DISCOVER",
+        "PLAN",
+        "APPROVE",
+        "EXECUTE",
+        "VERIFY",
+        "MEASURE",
+        "RECORD"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "VERIFIED",
+        "READY",
+        "CONTINUE",
+        "CONTRIBUTION"
+      ]
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "full_name": {
+          "type": "string"
+        },
+        "revision": {
+          "type": "string"
+        },
+        "branch": {
+          "type": "string"
+        }
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "input_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "output_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "approvals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "approval_id",
+          "approver",
+          "action",
+          "target",
+          "environment",
+          "decision",
+          "timestamp"
+        ],
+        "properties": {
+          "approval_id": {
+            "type": "string"
+          },
+          "approver": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string"
+          },
+          "target": {
+            "type": "string"
+          },
+          "environment": {
+            "type": "string",
+            "enum": [
+              "local",
+              "development",
+              "staging",
+              "production"
+            ]
+          },
+          "decision": {
+            "type": "string",
+            "enum": [
+              "APPROVED",
+              "REJECTED",
+              "REVOKED"
+            ]
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "scope": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "tool_executions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "tool",
+          "action",
+          "started_at",
+          "result"
+        ],
+        "properties": {
+          "tool": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string"
+          },
+          "target": {
+            "type": "string"
+          },
+          "environment": {
+            "type": "string",
+            "enum": [
+              "local",
+              "development",
+              "staging",
+              "production"
+            ]
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "finished_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "result": {
+            "type": "string",
+            "enum": [
+              "SUCCEEDED",
+              "FAILED",
+              "SKIPPED"
+            ]
+          },
+          "external_reference": {
+            "type": "string"
+          },
+          "redacted_summary": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "test_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "result"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "result": {
+            "type": "string",
+            "enum": [
+              "PASS",
+              "FAIL",
+              "NOT_RUN"
+            ]
+          },
+          "evidence_ref": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "uri",
+          "environment",
+          "captured_at"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "commit",
+              "build",
+              "test",
+              "log",
+              "runtime_check",
+              "approval",
+              "metric",
+              "document"
+            ]
+          },
+          "uri": {
+            "type": "string",
+            "format": "uri-reference"
+          },
+          "environment": {
+            "type": "string",
+            "enum": [
+              "local",
+              "development",
+              "staging",
+              "production",
+              "not_applicable"
+            ]
+          },
+          "captured_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "digest": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "next_action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "description",
+        "owner"
+      ],
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        }
+      }
+    },
+    "risk_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "VERIFIED"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "required": [
+          "completed_at",
+          "evidence_refs"
+        ],
+        "properties": {
+          "evidence_refs": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "CONTINUE"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "required": [
+          "next_action"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "CONTRIBUTION"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "required": [
+          "next_action"
+        ]
+      }
+    }
+  ]
+}
