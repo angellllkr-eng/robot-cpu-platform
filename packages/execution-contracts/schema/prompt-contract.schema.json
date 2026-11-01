@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mindreply.example/schemas/prompt-contract.schema.json",
+  "$id": "urn:mindreply:schema:prompt-contract:1.0.0",
   "title": "MindReply Production Prompt Contract",
   "type": "object",
   "additionalProperties": false,
